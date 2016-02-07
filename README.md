@@ -1,5 +1,5 @@
-This package is for reading and writing Praat TextGrid annotations in Python. It can read any
-TextGrid file that is compatible with the
+This package is for reading and writing Praat TextGrid annotations in Python. It can read TextGrid
+files that are compatible with the
 [TextGrid file format](http://www.fon.hum.uva.nl/praat/manual/TextGrid_file_formats.html)
 specification. It works with Python 2.7, 3.4, and 3.5.
 
