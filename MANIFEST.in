@@ -1,0 +1,3 @@
+include tests/files/*.TextGrid
+include README.md
+include Usage.txt

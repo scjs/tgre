@@ -1,0 +1,39 @@
+File type = "ooTextFile"
+
+xmin = 0 
+xmax = 2.5 
+tiers? <exists> 
+size = 2 
+item []: 
+    item [1]:
+        class = "IntervalTier" 
+        name = "Pat" 
+        xmin = 0 
+        xmax = 2.5 
+        intervals: size = 2 
+        intervals [1]:
+            xmin = 0 
+            xmax = 0.65
+            text = "hello" 
+        intervals [2]:
+            xmin = 0.65
+            xmax = 2.5 
+            text = "" 
+    item [2]:
+        class = "IntervalTier" 
+        name = "Sam" 
+        xmin = 0 
+        xmax = 2.5 
+        intervals: size = 3 
+        intervals [1]:
+            xmin = 0 
+            xmax = 1.125 
+            text = "" 
+        intervals [2]:
+            xmin = 1.125 
+            xmax = 1.45 
+            text = "ciao" 
+        intervals [3]:
+            xmin = 1.45 
+            xmax = 2.5 
+            text = "" 
