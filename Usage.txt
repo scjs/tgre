@@ -3,14 +3,14 @@ Examples
 Use `TextGrid.from_file()` to read a TextGrid file.
 
 >>> import tgre
->>> tg = tgre.TextGrid.from_file('tests/files/intervals.TextGrid')
+>>> tg = tgre.TextGrid.from_file('tests/files/usage-example.TextGrid')
 >>> print(tg)
-<TextGrid from 0 to 2.5 seconds with 2 tiers>
+<TextGrid from 0 to 2.5 seconds with 3 tiers>
 
 Access tiers through the `tiers` attribute, which stores a list of tiers.
 
 >>> len(tg.tiers)
-2
+3
 >>> print(tg.tiers[0])
 <IntervalTier "Pat" from 0 to 2.5 seconds with 2 intervals>
 >>> tg.tiers[0].name
@@ -23,6 +23,7 @@ Access tiers through the `tiers` attribute, which stores a list of tiers.
 ...    print(tier)
 <IntervalTier "Pat" from 0 to 2.5 seconds with 2 intervals>
 <IntervalTier "Sam" from 0 to 2.5 seconds with 3 intervals>
+<TextTier "Metronome" from 0 to 2.5 seconds with 3 points>
 
 Tiers can also be accessed by slicing or iterating through the TextGrid object.
 
@@ -32,8 +33,9 @@ Tiers can also be accessed by slicing or iterating through the TextGrid object.
 ...    print(tier)
 <IntervalTier "Pat" from 0 to 2.5 seconds with 2 intervals>
 <IntervalTier "Sam" from 0 to 2.5 seconds with 3 intervals>
+<TextTier "Metronome" from 0 to 2.5 seconds with 3 points>
 
-Access intervals or points by slicing or iterating through the tier object.
+Access intervals and points by slicing or iterating through the tier object.
 
 >>> print(tg[1][1])
 <Interval "ciao" from 1.125 to 1.45>
@@ -48,6 +50,16 @@ Access intervals or points by slicing or iterating through the tier object.
 <Interval "" from 0 to 1.125>
 <Interval "ciao" from 1.125 to 1.45>
 <Interval "" from 1.45 to 2.5>
+
+Points have `mark` (the label for a point) and `number` (the timestamp for a
+point) rather than `text`, `xmin`, and `xmax`.
+
+>>> print(tg[2][0])
+<Point "click" at 0.75>
+>>> tg[2][0].mark
+'click'
+>>> tg[2][0].number
+0.75
 
 Convert a TextGrid to a dict.
 
@@ -78,8 +90,20 @@ Convert a TextGrid to a dict.
                            'xmax': 1.45,
                            'text': 'ciao'},
                           {'xmin': 1.45,
-                           'xmax': 1.125,
+                           'xmax': 2.5,
                            'text': ''}
+                         ]
+           },
+           {'name': 'Metronome',
+            'class': 'TextTier',
+            'xmin': 0,
+            'xmax': 2.5,
+            'points': [{'number': 0.75,
+                        'mark': 'click'},
+                       {'number': 1.5,
+                        'mark': 'click'},
+                       {'number': 2.25,
+                        'mark': 'click'}
                          ]
            }]
 }
@@ -128,11 +152,12 @@ Add a tier to a TextGrid by modifying the list in the `tiers` attribute.
 
 >>> tg.tiers.append(tier)
 >>> len(tg)
-3
+4
 >>> for tier in tg:
 ...    print(tier)
 <IntervalTier "Pat" from 0 to 2.5 seconds with 2 intervals>
 <IntervalTier "Sam" from 0 to 2.5 seconds with 3 intervals>
+<TextTier "Metronome" from 0 to 2.5 seconds with 3 points>
 <IntervalTier "words" from 0 to 2.5 seconds with 2 intervals>
 
 Create a new TextGrid.
