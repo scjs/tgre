@@ -20,7 +20,7 @@ Examples
 Use `TextGrid.from_file()` to read a TextGrid file.
 
 >>> import tgre
->>> tg = tgre.TextGrid.from_file('tests/files/usage-example.TextGrid')
+>>> tg = tgre.TextGrid.from_file('test/files/usage-example.TextGrid')
 >>> print(tg)
 <TextGrid from 0 to 2.5 seconds with 3 tiers>
 
@@ -200,7 +200,7 @@ If a TextGrid is encoded in UTF-16, the `TextGrid.from_file()` and
 `TextGrid.to_praat()` methods should be called with an optional `encoding`
 parameter.
 
->>> tg = tgre.TextGrid.from_file('tests/files/numbers.TextGrid', encoding='utf_16')
+>>> tg = tgre.TextGrid.from_file('test/files/numbers.TextGrid', encoding='utf_16')
 
 """
 

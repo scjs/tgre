@@ -1,8 +1,14 @@
 from setuptools import setup
 
+
+with open('README.rst') as readme:
+    long_description = readme.read()
+
+
 setup(name='tgre',
       version='1.0',
       description='Read, write, and modify Praat TextGrid annotations',
+      long_description=long_description,
       url='http://github.com/scjs/tgre',
       author='Scott Seyfarth',
       license='MIT',
@@ -17,7 +23,8 @@ setup(name='tgre',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5'],
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6'],
       keywords='TextGrid Praat speech linguistics',
       packages=['tgre'],
       include_package_data=True,

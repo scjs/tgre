@@ -51,55 +51,55 @@ class TestPraatReader(object):
         return list(praat_reader(textgrid_string))
 
     def test_interval_tiers(self):
-        tg_file = 'tests/files/intervals.TextGrid'
+        tg_file = 'test/files/intervals.TextGrid'
         elements = self.read(tg_file)
 
         assert_equal(elements, self.intervals_expected)
 
     def test_empty_tier_and_text(self):
-        tg_file = 'tests/files/interval-tiers-with-empty-tier-and-empty-text.TextGrid'
+        tg_file = 'test/files/interval-tiers-with-empty-tier-and-empty-text.TextGrid'
         elements = self.read(tg_file)
 
         assert_equal(elements, self.empty_expected)
 
     def test_one_point(self):
-        tg_file = 'tests/files/one-point.TextGrid'
+        tg_file = 'test/files/one-point.TextGrid'
         elements = self.read(tg_file)
 
         assert_equal(elements, self.one_point_expected)
 
     def test_one_point_comments(self):
-        tg_file = 'tests/files/one-point-with-comments.TextGrid'
+        tg_file = 'test/files/one-point-with-comments.TextGrid'
         elements = self.read(tg_file)
 
         assert_equal(elements, self.one_point_expected)
 
     def test_one_point_comments_inline(self):
-        tg_file = 'tests/files/one-point-inline-comment-after-whitespace.TextGrid'
+        tg_file = 'test/files/one-point-inline-comment-after-whitespace.TextGrid'
         elements = self.read(tg_file)
 
         assert_equal(elements, self.one_point_expected)
 
     def test_one_point_comments_inline_no_sep(self):
-        tg_file = 'tests/files/one-point-inline-comment-no-whitespace.TextGrid'
+        tg_file = 'test/files/one-point-inline-comment-no-whitespace.TextGrid'
         elements = self.read(tg_file)
 
         assert_equal(elements, self.one_point_expected)
 
     def test_doubled_quotes(self):
-        tg_file = 'tests/files/doubled-quotes-in-text-and-mark.TextGrid'
+        tg_file = 'test/files/doubled-quotes-in-text-and-mark.TextGrid'
         elements = self.read(tg_file)
 
         assert_equal(elements, self.quotes_expected)
 
     def test_doubled_quotes_short_format(self):
-        tg_file = 'tests/files/short-doubled-quotes.TextGrid'
+        tg_file = 'test/files/short-doubled-quotes.TextGrid'
         elements = self.read(tg_file)
 
         assert_equal(elements, self.quotes_expected)
 
     def test_various_whitespace_sep_custom_format(self):
-        tg_file = 'tests/files/custom-intervals-points-various-whitespace.TextGrid'
+        tg_file = 'test/files/custom-intervals-points-various-whitespace.TextGrid'
         elements = self.read(tg_file)
 
         assert_equal(elements, self.whitespace_sep_expected)
@@ -265,7 +265,7 @@ class TestTextGrid(object):
 
 class TestTextGridIO(object):
     def test_from_file(self):
-        tg_file = 'tests/files/doubled-quotes-in-text-and-mark.TextGrid'
+        tg_file = 'test/files/doubled-quotes-in-text-and-mark.TextGrid'
         tg = TextGrid.from_file(tg_file)
 
         assert_equal(tg.xmin, 0.25)
@@ -297,7 +297,7 @@ class TestTextGridIO(object):
         assert_equal(tg.tiers[1]._items[1].mark, '"event" with quotes again')
 
     def test_from_file_armenian(self):
-        tg = TextGrid.from_file('tests/files/numbers.TextGrid', encoding='utf_16')
+        tg = TextGrid.from_file('test/files/numbers.TextGrid', encoding='utf_16')
 
         assert_equal(tg.tiers[0][0].text, u'մեկ')
         assert_equal(tg.tiers[0][1].text, u'երկու')
@@ -306,15 +306,15 @@ class TestTextGridIO(object):
 
     def test_utf8_bom(self):
         # BOM should be skipped by regex
-        tg = TextGrid.from_file('tests/files/intervals-utf8-bom.TextGrid')
+        tg = TextGrid.from_file('test/files/intervals-utf8-bom.TextGrid')
         assert_equal(tg.tiers[1][1].text, 'ciao')
 
     def test_from_file_missing_header(self):
         with assert_raises(ValueError):
-            TextGrid.from_file('tests/files/intervals-no-filetype.TextGrid')
+            TextGrid.from_file('test/files/intervals-no-filetype.TextGrid')
 
         with assert_raises(ValueError):
-            TextGrid.from_file('tests/files/intervals-no-object-class.TextGrid')
+            TextGrid.from_file('test/files/intervals-no-object-class.TextGrid')
 
     def test_to_praat_with_path(self):
         mock_tier = mock.Mock()
@@ -323,9 +323,9 @@ class TestTextGridIO(object):
         mock_tier.to_praat.return_value = 'a tier'
 
         tg = TextGrid(0, 1, [mock_tier, mock_tier])
-        tg.to_praat('tests/files/output.TextGrid')
+        tg.to_praat('test/files/output.TextGrid')
 
-        with open('tests/files/output.TextGrid') as output_file:
+        with open('test/files/output.TextGrid') as output_file:
             res = output_file.read()
 
         assert_equal(res, ('"ooTextFile"\n"TextGrid"\n'
@@ -334,7 +334,7 @@ class TestTextGridIO(object):
 
     @classmethod
     def teardown_class(cls):
-        os.remove('tests/files/output.TextGrid')
+        os.remove('test/files/output.TextGrid')
 
 
 class TestInterval(object):
