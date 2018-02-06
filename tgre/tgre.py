@@ -15,6 +15,193 @@ References
 Boersma, Paul & Weenink, David (2016). Praat: doing phonetics by
 computer [Computer program]. Retrieved from http://www.praat.org/
 
+Examples
+--------
+Use `TextGrid.from_file()` to read a TextGrid file.
+
+>>> import tgre
+>>> tg = tgre.TextGrid.from_file('tests/files/usage-example.TextGrid')
+>>> print(tg)
+<TextGrid from 0 to 2.5 seconds with 3 tiers>
+
+Access tiers through the `tiers` attribute, which stores a list of tiers.
+
+>>> len(tg.tiers)
+3
+>>> print(tg.tiers[0])
+<IntervalTier "Pat" from 0 to 2.5 seconds with 2 intervals>
+>>> tg.tiers[0].name
+'Pat'
+>>> tg.tiers[0].xmin
+0
+>>> tg.tiers[0].xmax
+2.5
+>>> for tier in tg.tiers:
+...    print(tier)
+<IntervalTier "Pat" from 0 to 2.5 seconds with 2 intervals>
+<IntervalTier "Sam" from 0 to 2.5 seconds with 3 intervals>
+<TextTier "Metronome" from 0 to 2.5 seconds with 3 points>
+
+Tiers can also be accessed by slicing or iterating through the TextGrid object.
+
+>>> print(tg[0])
+<IntervalTier "Pat" from 0 to 2.5 seconds with 2 intervals>
+>>> for tier in tg:
+...    print(tier)
+<IntervalTier "Pat" from 0 to 2.5 seconds with 2 intervals>
+<IntervalTier "Sam" from 0 to 2.5 seconds with 3 intervals>
+<TextTier "Metronome" from 0 to 2.5 seconds with 3 points>
+
+Access intervals and points by slicing or iterating through the tier object.
+
+>>> print(tg[1][1])
+<Interval "ciao" from 1.125 to 1.45>
+>>> tg[1][1].text
+'ciao'
+>>> tg[1][1].xmin
+1.125
+>>> tg[1][1].xmax
+1.45
+>>> for interval in tg[1]:
+...    print(interval)
+<Interval "" from 0 to 1.125>
+<Interval "ciao" from 1.125 to 1.45>
+<Interval "" from 1.45 to 2.5>
+
+Points have `mark` (the label for a point) and `number` (the timestamp for a
+point) rather than `text`, `xmin`, and `xmax`.
+
+>>> print(tg[2][0])
+<Point "click" at 0.75>
+>>> tg[2][0].mark
+'click'
+>>> tg[2][0].number
+0.75
+
+Convert a TextGrid to a dict.
+
+>>> tg_dict = tg.to_dict()
+>>> print(tg_dict)
+{'xmin': 0,
+ 'xmax': 2.5,
+ 'tiers': [{'name': 'Pat',
+            'class': 'IntervalTier',
+            'xmin': 0,
+            'xmax': 2.5,
+            'intervals': [{'xmin': 0,
+                           'xmax': 0.65,
+                           'text': 'hello'},
+                          {'xmin': 0.65,
+                           'xmax': 2.5,
+                           'text': ''}
+                            ]
+            },
+           {'name': 'Sam',
+            'class': 'IntervalTier',
+            'xmin': 0,
+            'xmax': 2.5,
+            'intervals': [{'xmin': 0,
+                           'xmax': 1.125,
+                           'text': ''},
+                          {'xmin': 1.125,
+                           'xmax': 1.45,
+                           'text': 'ciao'},
+                          {'xmin': 1.45,
+                           'xmax': 2.5,
+                           'text': ''}
+                         ]
+           },
+           {'name': 'Metronome',
+            'class': 'TextTier',
+            'xmin': 0,
+            'xmax': 2.5,
+            'points': [{'number': 0.75,
+                        'mark': 'click'},
+                       {'number': 1.5,
+                        'mark': 'click'},
+                       {'number': 2.25,
+                        'mark': 'click'}
+                         ]
+           }]
+}
+
+Create new intervals.
+
+>>> hi = tgre.Interval(0.4, 0.55, 'hi')
+>>> pat = tgre.Interval(0.55, 0.85, 'pat')
+
+Create a new tier. This tier is from 0 to 2.5 seconds, and contains the two
+intervals that were just created.
+
+>>> tier = tgre.IntervalTier("words", 0, 2.5, items=[hi, pat])
+>>> print(tier)
+<IntervalTier "words" from 0 to 2.5 seconds with 2 intervals>
+>>> print(tier[0])
+<Interval "hi" from 0.4 to 0.55>
+>>> print(tier[1])
+<Interval "pat" from 0.55 to 0.85>
+
+Add a new interval to an existing tier with the `insert()` method.
+
+>>> tier.insert(0.3, 0.4, 'oh')
+>>> print(tier)
+<IntervalTier "words" from 0 to 2.5 seconds with 3 intervals>
+>>> print(tier[0])
+<Interval "oh" from 0.3 to 0.4>
+>>> print(tier[1])
+<Interval "hi" from 0.4 to 0.55>
+>>> print(tier[2])
+<Interval "pat" from 0.55 to 0.85>
+
+Remove an interval from a tier with `del`.
+
+>>> del tier[2]
+>>> print(tier)
+<IntervalTier "words" from 0 to 2.5 seconds with 2 intervals>
+
+Find the interval on a tier at a particular time with the `where()` method.
+
+>>> interval = tier.where(0.48)
+>>> print(interval)
+<Interval "hi" from 0.4 to 0.55>
+
+Add a tier to a TextGrid by modifying the list in the `tiers` attribute.
+
+>>> tg.tiers.append(tier)
+>>> len(tg)
+4
+>>> for tier in tg:
+...    print(tier)
+<IntervalTier "Pat" from 0 to 2.5 seconds with 2 intervals>
+<IntervalTier "Sam" from 0 to 2.5 seconds with 3 intervals>
+<TextTier "Metronome" from 0 to 2.5 seconds with 3 points>
+<IntervalTier "words" from 0 to 2.5 seconds with 2 intervals>
+
+Create a new TextGrid.
+
+>>> first_tier = tgre.IntervalTier("segments", 0, 5)
+>>> second_tier = tgre.IntervalTier("words", 0, 5)
+>>> new_tg = tgre.TextGrid(0, 5, tiers=[first_tier, second_tier])
+>>> print(new_tg)
+<TextGrid from 0 to 5 seconds with 2 tiers>
+
+Write a TextGrid to a file with the `to_praat()` method.
+
+>>> new_tg.to_praat(path='mytextgrid.TextGrid')
+
+This method creates a TextGrid file with a different format than the ones
+that Praat creates, but it will still be read normally by Praat (and also by
+this module, if you read it back in with the `TextGrid.from_file()` method).
+The `to_praat()` method will raise a ValueError if the result will
+not be read correctly by Praat (for example, if there are intervals with
+negative duration).
+
+If a TextGrid is encoded in UTF-16, the `TextGrid.from_file()` and
+`TextGrid.to_praat()` methods should be called with an optional `encoding`
+parameter.
+
+>>> tg = tgre.TextGrid.from_file('tests/files/numbers.TextGrid', encoding='utf_16')
+
 """
 
 from __future__ import absolute_import
